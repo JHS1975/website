@@ -1,0 +1,4 @@
+To copy files from this project to the local publishing folder, use this command in the terminal:
+
+sudo cp -r /mnt/raid1/data/Dev/jhs1975/* /var/www/html/jhs1975
+
