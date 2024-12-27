@@ -1,3 +1,6 @@
+# JHS Class of 1975 website
+
+## Copy source to local publishing folder
 To copy files from this project to the local publishing folder, use this command in the terminal:
 
 sudo cp -r /mnt/raid1/data/Dev/jhs1975/* /var/www/html/jhs1975
