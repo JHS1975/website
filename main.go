@@ -23,24 +23,14 @@ func init() {
 func renderTemplate(w http.ResponseWriter, tmpl string, title string) {
 	log.Printf("Rendering template: %s with title: %s", tmpl, title)
 	err := templates.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title": title,
+		"Title":           title,
+		"ContentTemplate": tmpl,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		log.Println("Template error:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
-
-// func renderTemplate(w http.ResponseWriter, tmpl string, title string) {
-// 	log.Printf("Rendering template: %s with title: %s", tmpl, title)
-// 	err := templates.ExecuteTemplate(w, "base.html", map[string]interface{}{
-// 		"Title": title,
-// 	})
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		log.Println("Template error:", err)
-// 	}
-// }
 
 func main() {
 	log.Println("Server started on http://localhost:8080")
@@ -64,8 +54,26 @@ func main() {
 			log.Println("Handling Contact Us page")
 			renderTemplate(w, "contact.html", "Contact Us")
 		default:
-			notFoundHandler(w, r)
+			log.Println("404 - Page Not Found")
+			http.Error(w, "404 - Page Not Found", http.StatusNotFound)
 		}
+	})
+
+	http.HandleFunc("/send_message", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			name := r.FormValue("name")
+			email := r.FormValue("email")
+			message := r.FormValue("message")
+			log.Printf("Message received from %s (%s): %s", name, email, message)
+			// Add logic to send an email or save the message
+		} else {
+			log.Println("Invalid request method")
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Example success message
+		renderTemplate(w, "contact.html", "Message Sent!")
 	})
 
 	// Start the server

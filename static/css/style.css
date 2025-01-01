@@ -19,6 +19,11 @@ header img {
     width: auto;
 }
 
+p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
 nav {
     background-color: #333;
     padding: 10px 0;
@@ -35,6 +40,24 @@ nav a:hover {
     text-decoration: underline;
 }
 
+nav a:focus {
+    outline: 2px dashed #ffffff;
+}
+
+button {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #555;
+}
+
 .page-content {
     background-color: #444;
     margin: 20px auto;
@@ -48,4 +71,14 @@ nav a:hover {
 .page-content h1 {
     font-size: 2em;
     margin: 10px 0;
+}
+
+@media (max-width: 600px) {
+    nav a {
+        font-size: 1em;
+    }
+
+    .page-content {
+        padding: 15px;
+    }
 }
