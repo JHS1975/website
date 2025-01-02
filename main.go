@@ -6,10 +6,6 @@ import (
 	"net/http"
 )
 
-func init() {
-	log.Println("Templates parsed successfully")
-}
-
 func main() {
 	log.Println("Server started on http://localhost:8080")
 
@@ -20,22 +16,38 @@ func main() {
 	}
 
 	// Parse and clone templates
-	indexTemplate, err := baseTemplate.Clone().ParseFiles("templates/index.html")
+	indexTemplate, err := baseTemplate.Clone()
+	if err != nil {
+		log.Fatal("Error cloning base template:", err)
+	}
+	indexTemplate, err = indexTemplate.ParseFiles("templates/index.html")
 	if err != nil {
 		log.Fatal("Error parsing index template:", err)
 	}
 
-	reunionTemplate, err := baseTemplate.Clone().ParseFiles("templates/reunion.html")
+	reunionTemplate, err := baseTemplate.Clone()
+	if err != nil {
+		log.Fatal("Error cloning base template:", err)
+	}
+	reunionTemplate, err = reunionTemplate.ParseFiles("templates/reunion.html")
 	if err != nil {
 		log.Fatal("Error parsing reunion template:", err)
 	}
 
-	passedAwayTemplate, err := baseTemplate.Clone().ParseFiles("templates/passed_away.html")
+	passedAwayTemplate, err := baseTemplate.Clone()
+	if err != nil {
+		log.Fatal("Error cloning base template:", err)
+	}
+	passedAwayTemplate, err = passedAwayTemplate.ParseFiles("templates/passed_away.html")
 	if err != nil {
 		log.Fatal("Error parsing passed away template:", err)
 	}
 
-	contactTemplate, err := baseTemplate.Clone().ParseFiles("templates/contact.html")
+	contactTemplate, err := baseTemplate.Clone()
+	if err != nil {
+		log.Fatal("Error cloning base template:", err)
+	}
+	contactTemplate, err = contactTemplate.ParseFiles("templates/contact.html")
 	if err != nil {
 		log.Fatal("Error parsing contact template:", err)
 	}
@@ -60,27 +72,7 @@ func main() {
 		renderTemplate(w, contactTemplate, "Contact Us")
 	})
 
-	// Handle form submissions
-	http.HandleFunc("/send_message", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			name := r.FormValue("name")
-			email := r.FormValue("email")
-			message := r.FormValue("message")
-			log.Printf("Message received from %s (%s): %s", name, email, message)
-			// Add logic to send an email or save the message
-		} else {
-			log.Println("Invalid request method")
-			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-			return
-		}
-
-		// Example success message
-		err := contactTemplate.Execute(w, "Message Sent!")
-		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-	})
+	// ... (rest of your code) ...
 
 	// Start the server
 	log.Fatal(http.ListenAndServe(":8080", nil)) // Use log.Fatal for graceful shutdown on errors
