@@ -1,89 +1,96 @@
+/* General Page Styling */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #2d2d2d;
-    color: #ffffff;
-    text-align: center;
+    font-family: Arial, sans-serif; /* Ensure sans-serif font is applied */
+    background-color: #2d2d2d; /* Restore dark gray background */
+    color: #ffffff; /* White text */
+    text-align: center; /* Center-align text by default */
 }
 
+/* Header Styling */
 header {
-    background-color: #444;
-    height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #444; /* Restore header background */
+    height: 250px; /* Fixed height for the header */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
 }
 
 header img {
-    max-height: 100%;
-    width: auto;
+    max-height: 100%; /* Prevent image overflow */
+    width: auto; /* Keep aspect ratio */
 }
 
+/* Paragraph Styling */
 p {
     margin: 10px 0;
     line-height: 1.6;
 }
 
+/* Navigation Bar Styling */
 nav {
-    background-color: #333;
-    padding: 10px 0;
+    background-color: #333; /* Dark gray background for the nav bar */
+    padding: 10px 0; /* Add vertical spacing */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the menu items */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    position: sticky; /* Keep the nav bar at the top */
+    top: 0; /* Stick to the top */
+    z-index: 100; /* Ensure it stays above content */
 }
 
+/* Style individual nav links */
 nav a {
-    color: #ffffff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 1.2em;
+    color: #ffffff; /* White text */
+    text-decoration: none; /* Remove underline */
+    margin: 0 20px; /* Add horizontal spacing */
+    font-size: 1.2em; /* Increase font size */
+    padding: 5px 10px; /* Ensure consistent padding for all links */
+    border-radius: 5px; /* Rounded corners */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth hover effects */
+    display: inline-block; /* Ensures hover background doesn't cause text wrapping */
+    font-family: Arial, sans-serif; /* Explicitly set sans-serif font for links */
 }
 
+/* Hover effect for nav links */
 nav a:hover {
-    text-decoration: underline;
+    color: #f07bff; /* Light purple color on hover */
+    background-color: rgba(240, 123, 255, 0.2); /* Add a slight background highlight */
 }
 
-nav a:focus {
-    outline: 2px dashed #ffffff;
-}
-
+/* Active menu item styling */
 nav a.active {
-    font-weight: bold;
-    color: #f07bff; /* Or your preferred color */
+    color: #f07bff; /* Highlight active menu item */
+    border-bottom: 3px solid #f07bff; /* Underline active menu item */
 }
 
-button {
-    background-color: #333;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-button:hover {
-    background-color: #555;
-}
-
+/* Page Content Styling */
 .page-content {
-    background-color: #444;
+    background-color: #444; /* Restore dark gray background for content */
     margin: 20px auto;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 800px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
 }
 
+/* Centering and Styling for Page Titles */
 .page-content h1 {
     font-size: 2em;
     margin: 10px 0;
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
-    nav a {
-        font-size: 1em;
+    nav {
+        flex-direction: column; /* Stack menu items vertically */
+        padding: 10px;
     }
-
+    nav a {
+        margin: 10px 0; /* Adjust spacing for vertical layout */
+    }
     .page-content {
-        padding: 15px;
+        padding: 15px; /* Reduce padding for smaller screens */
     }
 }

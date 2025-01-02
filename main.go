@@ -57,33 +57,55 @@ func main() {
 
 	// Handle menu items
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		renderTemplate(w, indexTemplate, "Home")
+		renderTemplate(w, indexTemplate, "Home", "home")
 	})
 
 	http.HandleFunc("/reunion", func(w http.ResponseWriter, r *http.Request) {
-		renderTemplate(w, reunionTemplate, "50th Class Reunion")
+		renderTemplate(w, reunionTemplate, "50th Class Reunion", "reunion")
 	})
 
 	http.HandleFunc("/passed_away", func(w http.ResponseWriter, r *http.Request) {
-		renderTemplate(w, passedAwayTemplate, "Passed Away")
+		renderTemplate(w, passedAwayTemplate, "Passed Away", "passed_away")
 	})
 
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		renderTemplate(w, contactTemplate, "Contact Us")
+		renderTemplate(w, contactTemplate, "Contact Us", "contact")
 	})
 
-	// ... (rest of your code) ...
+	// Handle form submissions
+	http.HandleFunc("/send_message", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			name := r.FormValue("name")
+			email := r.FormValue("email")
+			message := r.FormValue("message")
+			log.Printf("Message received from %s (%s): %s", name, email, message)
+			// Add logic to send an email or save the message
+		} else {
+			log.Println("Invalid request method")
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Example success message
+		err := contactTemplate.Execute(w, "Message Sent!")
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+	})
 
 	// Start the server
 	log.Fatal(http.ListenAndServe(":8080", nil)) // Use log.Fatal for graceful shutdown on errors
 }
 
-func renderTemplate(w http.ResponseWriter, tmpl *template.Template, title string) {
+func renderTemplate(w http.ResponseWriter, tmpl *template.Template, title string, activePage string) {
+	log.Printf("Rendering template: %s with title: %s and active page: %s", tmpl.Name(), title, activePage)
 	err := tmpl.Execute(w, map[string]interface{}{
 		"Title":      title,
-		"ActivePage": tmpl.Name(),
+		"ActivePage": activePage,
 	})
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Println("Template rendering error:", err)
 	}
 }
