@@ -6,59 +6,61 @@ import (
 	"net/http"
 )
 
-// var templates = template.Must(template.ParseGlob("templates/*.html"))
-
-var templates = template.Must(template.New("").ParseFiles(
-	"templates/base.html",
-	"templates/index.html",
-	"templates/reunion.html",
-	"templates/passed_away.html",
-	"templates/contact.html",
-))
-
 func init() {
 	log.Println("Templates parsed successfully")
-}
-
-func renderTemplate(w http.ResponseWriter, tmpl string, title string) {
-	log.Printf("Rendering template: %s with title: %s", tmpl, title)
-	err := templates.ExecuteTemplate(w, "base.html", map[string]interface{}{
-		"Title":           title,
-		"ContentTemplate": tmpl,
-	})
-	if err != nil {
-		log.Println("Template error:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-	}
 }
 
 func main() {
 	log.Println("Server started on http://localhost:8080")
 
+	// Parse base template
+	baseTemplate, err := template.ParseFiles("templates/base.html")
+	if err != nil {
+		log.Fatal("Error parsing base template:", err)
+	}
+
+	// Parse and clone templates
+	indexTemplate, err := baseTemplate.Clone().ParseFiles("templates/index.html")
+	if err != nil {
+		log.Fatal("Error parsing index template:", err)
+	}
+
+	reunionTemplate, err := baseTemplate.Clone().ParseFiles("templates/reunion.html")
+	if err != nil {
+		log.Fatal("Error parsing reunion template:", err)
+	}
+
+	passedAwayTemplate, err := baseTemplate.Clone().ParseFiles("templates/passed_away.html")
+	if err != nil {
+		log.Fatal("Error parsing passed away template:", err)
+	}
+
+	contactTemplate, err := baseTemplate.Clone().ParseFiles("templates/contact.html")
+	if err != nil {
+		log.Fatal("Error parsing contact template:", err)
+	}
+
 	// Static files (CSS, images)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	// Routes
+	// Handle menu items
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case "/":
-			log.Println("Handling Home page")
-			renderTemplate(w, "index.html", "Home")
-		case "/reunion":
-			log.Println("Handling 50th Class Reunion page")
-			renderTemplate(w, "reunion.html", "50th Class Reunion")
-		case "/passed_away":
-			log.Println("Handling Passed Away page")
-			renderTemplate(w, "passed_away.html", "Passed Away")
-		case "/contact":
-			log.Println("Handling Contact Us page")
-			renderTemplate(w, "contact.html", "Contact Us")
-		default:
-			log.Println("404 - Page Not Found")
-			http.Error(w, "404 - Page Not Found", http.StatusNotFound)
-		}
+		renderTemplate(w, indexTemplate, "Home")
 	})
 
+	http.HandleFunc("/reunion", func(w http.ResponseWriter, r *http.Request) {
+		renderTemplate(w, reunionTemplate, "50th Class Reunion")
+	})
+
+	http.HandleFunc("/passed_away", func(w http.ResponseWriter, r *http.Request) {
+		renderTemplate(w, passedAwayTemplate, "Passed Away")
+	})
+
+	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		renderTemplate(w, contactTemplate, "Contact Us")
+	})
+
+	// Handle form submissions
 	http.HandleFunc("/send_message", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			name := r.FormValue("name")
@@ -73,15 +75,23 @@ func main() {
 		}
 
 		// Example success message
-		renderTemplate(w, "contact.html", "Message Sent!")
+		err := contactTemplate.Execute(w, "Message Sent!")
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	})
 
 	// Start the server
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil)) // Use log.Fatal for graceful shutdown on errors
 }
 
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("404 - Page Not Found: %s", r.URL.Path)
-	w.WriteHeader(http.StatusNotFound)
-	w.Write([]byte("404 - Page Not Found"))
+func renderTemplate(w http.ResponseWriter, tmpl *template.Template, title string) {
+	err := tmpl.Execute(w, map[string]interface{}{
+		"Title":      title,
+		"ActivePage": tmpl.Name(),
+	})
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+	}
 }

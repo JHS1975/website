@@ -9,16 +9,15 @@
 </head>
 <body>
     <header>
-        <img src="/static/images/JHS_header.jpg" alt="Jordan High School Class of 1975" style="width: 100%; height: auto;">
+        <img src="/static/images/JHS_header.jpg" alt="Jordan High School Class of 1975" aria-label="Jordan High School Class of 1975 Header Image">
     </header>
     <nav>
-        <a href="/">Home</a>
-        <a href="/reunion">50th Class Reunion</a>
-        <a href="/passed_away">Passed Away</a>
-        <a href="/contact">Contact Us</a>
+        <a href="/" class="{{if eq .ActivePage "index.html"}}active{{end}}">Home</a>
+        <a href="/reunion" class="{{if eq .ActivePage "reunion.html"}}active{{end}}">50th Class Reunion</a>
+        <a href="/passed_away" class="{{if eq .ActivePage "passed_away.html"}}active{{end}}">Passed Away</a>
+        <a href="/contact" class="{{if eq .ActivePage "contact.html"}}active{{end}}">Contact Us</a>
     </nav>
     <div class="page-content">
-        <p>Placeholder: Block content.</p>
         {{ block "content" . }}{{ end }}
     </div>
 </body>
