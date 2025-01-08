@@ -1,13 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 )
 
+const port = ":8087" // Public port: 8087
+
 func main() {
-	log.Println("Server started on http://localhost:8080")
+	fmt.Printf("Server running on http://localhost%s\n", port)
 
 	// Parse base template
 	baseTemplate, err := template.ParseFiles("templates/base.html")
@@ -74,6 +77,8 @@ func main() {
 
 	// Handle form submissions
 	http.HandleFunc("/send_message", func(w http.ResponseWriter, r *http.Request) {
+		// log.Printf("Request received: %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
+
 		if r.Method == http.MethodPost {
 			name := r.FormValue("name")
 			email := r.FormValue("email")
@@ -95,11 +100,11 @@ func main() {
 	})
 
 	// Start the server
-	log.Fatal(http.ListenAndServe(":8080", nil)) // Use log.Fatal for graceful shutdown on errors
+	log.Fatal(http.ListenAndServe(port, nil)) // Use log.Fatal for graceful shutdown on errors
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl *template.Template, title string, activePage string) {
-	log.Printf("Rendering template: %s with title: %s and active page: %s", tmpl.Name(), title, activePage)
+	// log.Printf("Rendering template: %s with title: %s and active page: %s", tmpl.Name(), title, activePage)
 	err := tmpl.Execute(w, map[string]interface{}{
 		"Title":      title,
 		"ActivePage": activePage,

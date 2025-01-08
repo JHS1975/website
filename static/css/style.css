@@ -1,10 +1,18 @@
 /* General Page Styling */
 body {
+    display: flex;
+    flex-direction: column; /* Stack header, content, and footer vertically */
+    min-height: 100vh; /* Ensure body takes up the full height of the viewport */
     margin: 0;
     font-family: Arial, sans-serif; /* Ensure sans-serif font is applied */
     background-color: #2d2d2d; /* Restore dark gray background */
     color: #ffffff; /* White text */
     text-align: center; /* Center-align text by default */
+}
+
+/* Page Wrapper for Main Content */
+.page-wrapper {
+    flex: 1; /* Allow the wrapper to grow and take up available space */
 }
 
 /* Header Styling */
@@ -19,6 +27,20 @@ header {
 header img {
     max-height: 100%; /* Prevent image overflow */
     width: auto; /* Keep aspect ratio */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333; /* Match the navbar background */
+    color: #ffffff; /* White text */
+    text-align: center; /* Center-align the text */
+    padding: 10px 0; /* Add vertical spacing */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow at the top */
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em; /* Slightly smaller text */
 }
 
 /* Paragraph Styling */

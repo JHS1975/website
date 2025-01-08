@@ -8,17 +8,22 @@
     <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <img src="/static/images/JHS_header.jpg" alt="Jordan High School Class of 1975" aria-label="Jordan High School Class of 1975 Header Image">
-    </header>
-    <nav>
-        <a href="/" class="{{if eq .ActivePage "home"}}active{{end}}">Home</a>
-        <a href="/reunion" class="{{if eq .ActivePage "reunion"}}active{{end}}">50th Class Reunion</a>
-        <a href="/passed_away" class="{{if eq .ActivePage "passed_away"}}active{{end}}">Passed Away</a>
-        <a href="/contact" class="{{if eq .ActivePage "contact"}}active{{end}}">Contact Us</a>
-    </nav>    
-        <div class="page-content">
-        {{ block "content" . }}{{ end }}
-    </div>
+    <div class="page-wrapper">
+        <header>
+            <img src="/static/images/JHS_header.jpg" alt="Jordan High School Class of 1975" aria-label="Jordan High School Class of 1975 Header Image">
+        </header>
+        <nav>
+            <a href="/" class="{{if eq .ActivePage "home"}}active{{end}}">Home</a>
+            <a href="/reunion" class="{{if eq .ActivePage "reunion"}}active{{end}}">50th Class Reunion</a>
+            <!-- <a href="/passed_away" class="{{if eq .ActivePage "passed_away"}}active{{end}}">Passed Away</a>
+            <a href="/contact" class="{{if eq .ActivePage "contact"}}active{{end}}">Contact Us</a> -->
+        </nav>    
+            <div class="page-content">
+            {{ block "content" . }}{{ end }}
+        </div>
+        </div>
+    <footer>
+        <p>.&copy; 2025 Jordan High School Class of 1975. All rights reserved.</p>
+    </footer>
 </body>
 </html>
